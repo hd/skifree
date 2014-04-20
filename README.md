@@ -1,4 +1,4 @@
 skifree
 =======
 
-skifree js
+A js/html5 clone of skifree.
