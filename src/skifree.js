@@ -3,6 +3,14 @@
     var canvas = document.querySelector("canvas");
     var drawingSurface = canvas.getContext("2d");
 
+    var skierStates = {
+        HORIZONTAL:     0,
+        LEFT_SLIGHT:    1,
+        RIGHT_SLIGHT:   2,
+        LEFT_DIAGONAL:  3,
+        RIGHT_DIAGONAL: 4,
+        STRAIGHT:       5
+    }
     var spriteObject = {
         sourceX:      0,
         sourceY:      0,
@@ -13,7 +21,8 @@
         width:        25,
         height:       34,
         vx:           0,
-        vy:           0
+        vy:           0,
+        state:        0
     };
 
     var sprites = [];
@@ -77,6 +86,7 @@
 
     function loadHandler(){
         update();
+        render();
     }
 
     function update(){
@@ -101,7 +111,6 @@
         }
         skier.x = Math.max(0, Math.min(skier.x + skier.vx, canvas.width - skier.width));
         skier.y = Math.max(0, Math.min(skier.y + skier.vy, canvas.height - skier.height));
-        render();
     }
 
     function render(){
