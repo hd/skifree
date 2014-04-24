@@ -3,14 +3,14 @@
     var canvas = document.querySelector("canvas");
     var drawingSurface = canvas.getContext("2d");
 
-    var skierStates = {
-        HORIZONTAL:     0,
-        LEFT_SLIGHT:    1,
-        RIGHT_SLIGHT:   2,
-        LEFT_DIAGONAL:  3,
-        RIGHT_DIAGONAL: 4,
-        STRAIGHT:       5
-    }
+    var LEFT_HORIZONTAL  = 0;
+    var RIGHT_HORIZONTAL = 1;
+    var LEFT_SLIGHT      = 2;
+    var RIGHT_SLIGHT     = 3;
+    var LEFT_DIAGONAL    = 4;
+    var RIGHT_DIAGONAL   = 5;
+    var STRAIGHT         = 6;
+
     var spriteObject = {
         sourceX:      0,
         sourceY:      0,
@@ -22,7 +22,8 @@
         height:       34,
         vx:           0,
         vy:           0,
-        state:        0
+        state:        LEFT_HORIZONTAL,
+        mirrored:     false,
     };
 
     var sprites = [];
@@ -33,6 +34,10 @@
     var image = new Image();
     image.addEventListener("load", loadHandler, false);
     image.src = "../images/SkiFreeStuff.png";
+
+    var mirroredImage = new Image()
+    mirroredImage.addEventListener("load", loadHandler, false);
+    mirroredImage.src = "../images/SkiFreeStuffMirrored.png";
 
     var UP    = 38;
     var DOWN  = 40;
@@ -85,8 +90,51 @@
     }, false);
 
     function loadHandler(){
+        changeSkierState(skier.state);
         update();
-        render();
+    }
+
+    function changeSkierState(state){
+        switch(state){
+            case LEFT_HORIZONTAL:
+                skier.sourceX      = 249;
+                skier.sourceY      = 0;
+                skier.sourceWidth  = 25;
+                skier.sourceHeight = 34;
+                skier.width        = 25;
+                skier.height       = 34;
+                skier.vx           = 0;
+                skier.vy           = 0;
+                skier.state        = LEFT_HORIZONTAL;
+                skier.mirrored     = true;
+                break;
+
+            case RIGHT_HORIZONTAL:
+                skier.sourceX      = 0;
+                skier.sourceY      = 0;
+                skier.sourceWidth  = 25;
+                skier.sourceHeight = 34;
+                skier.width        = 25;
+                skier.height       = 34;
+                skier.vx           = 0;
+                skier.vy           = 0;
+                skier.state        = RIGHT_HORIZONTAL;
+                skier.mirrored     = false;
+                break;
+
+            case LEFT_SLIGHT:
+                skier.sourceX      = 0;
+                skier.sourceY      = 0;
+                skier.sourceWidth  = 25;
+                skier.sourceHeight = 34;
+                skier.width        = 25;
+                skier.height       = 34;
+                skier.vx           = 0;
+                skier.vy           = 0;
+                skier.state        = RIGHT_HORIZONTAL;
+                skier.mirrored     = true;
+                break;
+        }
     }
 
     function update(){
@@ -111,6 +159,7 @@
         }
         skier.x = Math.max(0, Math.min(skier.x + skier.vx, canvas.width - skier.width));
         skier.y = Math.max(0, Math.min(skier.y + skier.vy, canvas.height - skier.height));
+        render();
     }
 
     function render(){
@@ -119,7 +168,7 @@
             for(var i = 0; i < sprites.length; i++){
                 var sprite = sprites[i];
                 drawingSurface.drawImage(
-                    image,
+                    sprite.mirrored ? mirroredImage : image,
                     sprite.sourceX, sprite.sourceY,
                     sprite.sourceWidth, sprite.sourceHeight,
                     Math.floor(sprite.x), Math.floor(sprite.y),
