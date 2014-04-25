@@ -22,7 +22,7 @@
         height:       34,
         vx:           0,
         vy:           0,
-        state:        LEFT_HORIZONTAL,
+        state:        STRAIGHT,
         mirrored:     false,
     };
 
@@ -123,7 +123,7 @@
                 break;
 
             case LEFT_SLIGHT:
-                skier.sourceX      = 0;
+                skier.sourceX      = 224;
                 skier.sourceY      = 0;
                 skier.sourceWidth  = 25;
                 skier.sourceHeight = 34;
@@ -131,8 +131,60 @@
                 skier.height       = 34;
                 skier.vx           = 0;
                 skier.vy           = 0;
-                skier.state        = RIGHT_HORIZONTAL;
+                skier.state        = LEFT_SLIGHT;
                 skier.mirrored     = true;
+                break;
+
+            case RIGHT_SLIGHT:
+                skier.sourceX      = 25;
+                skier.sourceY      = 0;
+                skier.sourceWidth  = 22;
+                skier.sourceHeight = 34;
+                skier.width        = 22;
+                skier.height       = 34;
+                skier.vx           = 0;
+                skier.vy           = 0;
+                skier.state        = RIGHT_SLIGHT;
+                skier.mirrored     = false;
+                break;
+
+            case LEFT_DIAGONAL:
+                skier.sourceX      = 206;
+                skier.sourceY      = 0;
+                skier.sourceWidth  = 20;
+                skier.sourceHeight = 34;
+                skier.width        = 20;
+                skier.height       = 34;
+                skier.vx           = 0;
+                skier.vy           = 0;
+                skier.state        = LEFT_DIAGONAL;
+                skier.mirrored     = true;
+                break;
+
+            case RIGHT_DIAGONAL:
+                skier.sourceX      = 47;
+                skier.sourceY      = 0;
+                skier.sourceWidth  = 20;
+                skier.sourceHeight = 34;
+                skier.width        = 20;
+                skier.height       = 34;
+                skier.vx           = 0;
+                skier.vy           = 0;
+                skier.state        = RIGHT_DIAGONAL;
+                skier.mirrored     = false;
+                break;
+
+            case STRAIGHT:
+                skier.sourceX      = 66;
+                skier.sourceY      = 0;
+                skier.sourceWidth  = 18;
+                skier.sourceHeight = 34;
+                skier.width        = 18;
+                skier.height       = 34;
+                skier.vx           = 0;
+                skier.vy           = 0;
+                skier.state        = STRAIGHT;
+                skier.mirrored     = false;
                 break;
         }
     }
