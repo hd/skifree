@@ -9,7 +9,9 @@
     var RIGHT_SLIGHT     = 3;
     var LEFT_DIAGONAL    = 4;
     var RIGHT_DIAGONAL   = 5;
-    var STRAIGHT         = 6;
+    var STRAIGHT_DOWN    = 6;
+    var WALK_LEFT        = 7;
+    var WALK_RIGHT       = 8;
 
     var spriteObject = {
         sourceX:      0,
@@ -22,7 +24,7 @@
         height:       34,
         vx:           0,
         vy:           0,
-        state:        STRAIGHT,
+        state:        LEFT_HORIZONTAL,
         mirrored:     false,
     };
 
@@ -90,7 +92,7 @@
     }, false);
 
     function loadHandler(){
-        changeSkierState(skier.state);
+        //changeSkierState(skier.state);
         update();
     }
 
@@ -174,7 +176,7 @@
                 skier.mirrored     = false;
                 break;
 
-            case STRAIGHT:
+            case STRAIGHT_DOWN:
                 skier.sourceX      = 66;
                 skier.sourceY      = 0;
                 skier.sourceWidth  = 18;
@@ -183,8 +185,34 @@
                 skier.height       = 34;
                 skier.vx           = 0;
                 skier.vy           = 0;
-                skier.state        = STRAIGHT;
+                skier.state        = STRAIGHT_DOWN;
                 skier.mirrored     = false;
+                break;
+
+            case WALK_RIGHT:
+                skier.sourceX      = 32;
+                skier.sourceY      = 40;
+                skier.sourceWidth  = 25;
+                skier.sourceHeight = 28;
+                skier.width        = 25;
+                skier.height       = 28;
+                skier.vx           = 0;
+                skier.vy           = 0;
+                skier.state        = WALK_RIGHT;
+                skier.mirrored     = false;
+                break;
+
+            case WALK_LEFT:
+                skier.sourceX      = 216;
+                skier.sourceY      = 40;
+                skier.sourceWidth  = 25;
+                skier.sourceHeight = 28;
+                skier.width        = 25;
+                skier.height       = 28;
+                skier.vx           = 0;
+                skier.vy           = 0;
+                skier.state        = WALK_LEFT;
+                skier.mirrored     = true;
                 break;
         }
     }
@@ -195,12 +223,31 @@
             skier.vy = -5;
         }
         if(moveDown && !moveUp){
+            if(skier.state !== STRAIGHT_DOWN){
+                changeSkierState(STRAIGHT_DOWN);
+            }
             skier.vy = 5;
         }
         if(moveLeft && !moveRight){
+            if(skier.state === LEFT_HORIZONTAL){
+                console.log("Change to walk left");
+                changeSkierState(WALK_LEFT);
+            }
+            else{
+                console.log("Change to left horizontal");
+                changeSkierState(LEFT_HORIZONTAL);
+            }
             skier.vx = -5;
         }
         if(moveRight && !moveLeft){
+            if(skier.state === RIGHT_HORIZONTAL){
+                console.log("Change to walk right");
+                changeSkierState(WALK_RIGHT);
+            }
+            else{
+                console.log("Change to right horizontal");
+                changeSkierState(RIGHT_HORIZONTAL);
+            }
             skier.vx = 5;
         }
         if(!moveUp && !moveDown){
