@@ -1,4 +1,5 @@
 (function(){
+    AnimationFrame.shim();
     // canvas
     var canvas = document.querySelector("canvas");
     var drawingSurface = canvas.getContext("2d");
@@ -26,6 +27,10 @@
         vy:           0,
         state:        LEFT_HORIZONTAL,
         mirrored:     false,
+        counter:      0,
+        step:         10,
+        nextStep:     0,
+        endStep:      10,
     };
 
     var sprites = [];
@@ -135,6 +140,8 @@
                 skier.vy           = 0;
                 skier.state        = LEFT_SLIGHT;
                 skier.mirrored     = true;
+                skier.counter      = 0;
+                skier.nextStep     = 0;
                 break;
 
             case RIGHT_SLIGHT:
@@ -148,6 +155,8 @@
                 skier.vy           = 0;
                 skier.state        = RIGHT_SLIGHT;
                 skier.mirrored     = false;
+                skier.counter      = 0;
+                skier.nextStep     = 0;
                 break;
 
             case LEFT_DIAGONAL:
@@ -161,6 +170,8 @@
                 skier.vy           = 0;
                 skier.state        = LEFT_DIAGONAL;
                 skier.mirrored     = true;
+                skier.counter      = 0;
+                skier.nextStep     = 0;
                 break;
 
             case RIGHT_DIAGONAL:
@@ -174,6 +185,8 @@
                 skier.vy           = 0;
                 skier.state        = RIGHT_DIAGONAL;
                 skier.mirrored     = false;
+                skier.counter      = 0;
+                skier.nextStep     = 0;
                 break;
 
             case STRAIGHT_DOWN:
@@ -187,6 +200,8 @@
                 skier.vy           = 0;
                 skier.state        = STRAIGHT_DOWN;
                 skier.mirrored     = false;
+                skier.counter      = 0;
+                skier.nextStep     = 0;
                 break;
 
             case WALK_RIGHT:
@@ -220,7 +235,47 @@
     function update(){
         window.requestAnimationFrame(update, canvas);
         if(moveUp && !moveDown){
-            skier.vy = -5;
+            if(skier.state === LEFT_HORIZONTAL){
+                if(skier.counter === skier.step){
+                    skier.counter = 0;
+                    changeSkierState(WALK_LEFT);
+                }
+                else{
+                    skier.counter += 1;
+                }
+            }
+            else if(skier.state === WALK_LEFT){
+                if(skier.counter === skier.step){
+                    skier.counter = 0;
+                    changeSkierState(LEFT_HORIZONTAL);
+                }
+                else{
+                    skier.counter += 1;
+                }
+            }
+            else if(skier.state === RIGHT_HORIZONTAL){
+                if(skier.counter === skier.step){
+                    skier.counter = 0;
+                    changeSkierState(WALK_RIGHT);
+                }
+                else{
+                    skier.counter += 1;
+                }
+            }
+            else if(skier.state === WALK_RIGHT){
+                if(skier.counter === skier.step){
+                    skier.counter = 0;
+                    changeSkierState(RIGHT_HORIZONTAL);
+                }
+                else{
+                    skier.counter += 1;
+                }
+            }
+            else{
+                skier.counter = 0;
+                changeSkierState(RIGHT_HORIZONTAL);
+            }
+            skier.vy = -1;
         }
         if(moveDown && !moveUp){
             if(skier.state !== STRAIGHT_DOWN){
@@ -230,25 +285,54 @@
         }
         if(moveLeft && !moveRight){
             if(skier.state === LEFT_HORIZONTAL){
-                console.log("Change to walk left");
-                changeSkierState(WALK_LEFT);
+                if(skier.counter === skier.step){
+                    skier.counter = 0;
+                    changeSkierState(WALK_LEFT);
+                }
+                else{
+                    skier.counter += 1;
+                }
             }
-            else{
-                console.log("Change to left horizontal");
+            else if(skier.state === WALK_LEFT){
+                if(skier.counter === skier.step){
+                    skier.counter = 0;
+                    changeSkierState(LEFT_HORIZONTAL);
+                }
+                else{
+                    skier.counter += 1;
+                }
+            }
+            else {
+                skier.counter = 0;
                 changeSkierState(LEFT_HORIZONTAL);
             }
-            skier.vx = -5;
+            skier.vx = -1;
         }
+
         if(moveRight && !moveLeft){
             if(skier.state === RIGHT_HORIZONTAL){
-                console.log("Change to walk right");
-                changeSkierState(WALK_RIGHT);
+                if(skier.counter === skier.step){
+                    skier.counter = 0;
+                    changeSkierState(WALK_RIGHT);
+                }
+                else{
+                    skier.counter += 1;
+                }
+            }
+            else if(skier.state === WALK_RIGHT){
+                if(skier.counter === skier.step){
+                    skier.counter = 0;
+                    changeSkierState(RIGHT_HORIZONTAL);
+                }
+                else{
+                    skier.counter += 1;
+                }
             }
             else{
-                console.log("Change to right horizontal");
+                skier.counter = 0;
                 changeSkierState(RIGHT_HORIZONTAL);
             }
-            skier.vx = 5;
+            skier.vx = 1;
         }
         if(!moveUp && !moveDown){
             skier.vy = 0;
