@@ -101,7 +101,6 @@
                 skier.vy           = 0;
                 skier.state        = LEFT_SLIGHT;
                 skier.mirrored     = true;
-                skier.counter      = 0;
                 break;
             case RIGHT_SLIGHT:
                 skier.sourceX      = 25;
@@ -114,7 +113,6 @@
                 skier.vy           = 0;
                 skier.state        = RIGHT_SLIGHT;
                 skier.mirrored     = false;
-                skier.counter      = 0;
                 break;
             case LEFT_DIAGONAL:
                 skier.sourceX      = 206;
@@ -127,7 +125,6 @@
                 skier.vy           = 0;
                 skier.state        = LEFT_DIAGONAL;
                 skier.mirrored     = true;
-                skier.counter      = 0;
                 break;
             case RIGHT_DIAGONAL:
                 skier.sourceX      = 47;
@@ -140,7 +137,6 @@
                 skier.vy           = 0;
                 skier.state        = RIGHT_DIAGONAL;
                 skier.mirrored     = false;
-                skier.counter      = 0;
                 break;
             case STRAIGHT_DOWN:
                 skier.sourceX      = 66;
@@ -153,7 +149,6 @@
                 skier.vy           = 0;
                 skier.state        = STRAIGHT_DOWN;
                 skier.mirrored     = false;
-                skier.counter      = 0;
                 break;
             case WALK_RIGHT:
                 skier.sourceX      = 32;
@@ -219,7 +214,7 @@
             if(skier.state !== STRAIGHT_DOWN){
                 changeSkierState(STRAIGHT_DOWN);
             }
-            skier.vy = 5;
+            skier.vy = 3;
         }
         else if(moveLeft){
             switch(skier.state){
@@ -247,12 +242,12 @@
                     animateSkierState(LEFT_HORIZONTAL);
                     skier.vx = 0;
                     skier.vy = 0;
-                default:
-                    skier.counter = 0;
-                    changeSkierState(LEFT_HORIZONTAL);
-                    skier.vx = -1;
-                    skier.vy = 0;
-                    break;
+                //default:
+                    //skier.counter = 0;
+                    //changeSkierState(LEFT_HORIZONTAL);
+                    //skier.vx = -1;
+                    //skier.vy = 0;
+                    //break;
             }
         }
         else if(moveRight){
