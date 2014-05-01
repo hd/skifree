@@ -192,77 +192,80 @@
         if(moveUp){
             switch(skier.state){
                 case LEFT_HORIZONTAL:
-                    animateSkierState(WALK_LEFT);
+                    changeSkierState(WALK_LEFT);
                     break;
                 case WALK_LEFT:
-                    animateSkierState(LEFT_HORIZONTAL);
+                    changeSkierState(LEFT_HORIZONTAL);
                     break;
                 case RIGHT_HORIZONTAL:
-                    animateSkierState(WALK_RIGHT);
+                    changeSkierState(WALK_RIGHT);
                     break;
                 case WALK_RIGHT:
-                    animateSkierState(RIGHT_HORIZONTAL);
+                    changeSkierState(RIGHT_HORIZONTAL);
                     break;
                 default:
-                    skier.counter = 0;
                     changeSkierState(RIGHT_HORIZONTAL);
                     break;
             }
-            skier.vy = -1;
+            moveUp = false;
+            skier.vy = -2;
         }
         else if(moveDown){
             if(skier.state !== STRAIGHT_DOWN){
                 changeSkierState(STRAIGHT_DOWN);
             }
+            moveDown = false;
             skier.vy = 3;
         }
         else if(moveLeft){
             switch(skier.state){
                 case LEFT_HORIZONTAL:
-                    animateSkierState(WALK_LEFT);
-                    skier.vx = -1;
+                    //animateSkierState(WALK_LEFT);
+                    changeSkierState(WALK_LEFT);
+                    skier.vx = -2;
                     skier.vy = 0;
                     break;
                 case WALK_LEFT:
-                    animateSkierState(LEFT_HORIZONTAL);
-                    skier.vx = -1;
+                    //animateSkierState(LEFT_HORIZONTAL);
+                    changeSkierState(LEFT_HORIZONTAL);
+                    skier.vx = -2;
                     skier.vy = 0;
                     break;
                 case STRAIGHT_DOWN:
-                    animateSkierState(LEFT_SLIGHT);
-                    skier.vx = -3;
-                    skier.vy = 4;
+                    changeSkierState(LEFT_SLIGHT);
+                    skier.vx = -1.5;
+                    skier.vy = 2.6;
                     break;
                 case LEFT_SLIGHT:
-                    animateSkierState(LEFT_DIAGONAL);
-                    skier.vx = -4;
-                    skier.vy = 3;
+                    changeSkierState(LEFT_DIAGONAL);
+                    skier.vx = -2.6;
+                    skier.vy = 1.5;
                     break;
                 case LEFT_DIAGONAL:
-                    animateSkierState(LEFT_HORIZONTAL);
-                    skier.vx = 0;
+                    changeSkierState(LEFT_HORIZONTAL);
+                    skier.vx = -2;
                     skier.vy = 0;
-                //default:
-                    //skier.counter = 0;
-                    //changeSkierState(LEFT_HORIZONTAL);
-                    //skier.vx = -1;
-                    //skier.vy = 0;
-                    //break;
+                    break;
+                default:
+                    changeSkierState(LEFT_HORIZONTAL);
+                    skier.vx = -2;
+                    skier.vy = 0;
             }
+            moveLeft = false;
         }
         else if(moveRight){
             switch(skier.state){
                 case RIGHT_HORIZONTAL:
-                    animateSkierState(WALK_RIGHT);
+                    changeSkierState(WALK_RIGHT);
                     break;
                 case WALK_RIGHT:
-                    animateSkierState(RIGHT_HORIZONTAL);
+                    changeSkierState(RIGHT_HORIZONTAL);
                     break;
                 default:
-                    skier.counter = 0;
                     changeSkierState(RIGHT_HORIZONTAL);
                     break;
             }
+            moveRight = false;
             skier.vx = 1;
         }
         else{
@@ -276,6 +279,7 @@
                     break;
             }
         }
+        //console.log(count);
         skier.x = Math.max(0, Math.min(skier.x + skier.vx, canvas.width - skier.width));
         skier.y = Math.max(0, Math.min(skier.y + skier.vy, canvas.height - skier.height));
         render();
