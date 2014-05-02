@@ -20,7 +20,6 @@
     var DOWN  = 40;
     var RIGHT = 39;
     var LEFT  = 37;
-
     var moveUp    = false;
     var moveDown  = false;
     var moveRight = false;
@@ -101,6 +100,7 @@
                 skier.vy           = 0;
                 skier.state        = LEFT_SLIGHT;
                 skier.mirrored     = true;
+                skier.counter      = 0;
                 break;
             case RIGHT_SLIGHT:
                 skier.sourceX      = 25;
@@ -113,6 +113,7 @@
                 skier.vy           = 0;
                 skier.state        = RIGHT_SLIGHT;
                 skier.mirrored     = false;
+                skier.counter      = 0;
                 break;
             case LEFT_DIAGONAL:
                 skier.sourceX      = 206;
@@ -125,6 +126,7 @@
                 skier.vy           = 0;
                 skier.state        = LEFT_DIAGONAL;
                 skier.mirrored     = true;
+                skier.counter      = 0;
                 break;
             case RIGHT_DIAGONAL:
                 skier.sourceX      = 47;
@@ -137,6 +139,7 @@
                 skier.vy           = 0;
                 skier.state        = RIGHT_DIAGONAL;
                 skier.mirrored     = false;
+                skier.counter      = 0;
                 break;
             case STRAIGHT_DOWN:
                 skier.sourceX      = 66;
@@ -149,6 +152,7 @@
                 skier.vy           = 0;
                 skier.state        = STRAIGHT_DOWN;
                 skier.mirrored     = false;
+                skier.counter      = 0;
                 break;
             case WALK_RIGHT:
                 skier.sourceX      = 32;
@@ -191,24 +195,8 @@
         window.requestAnimationFrame(update, canvas);
         if(moveUp){
             switch(skier.state){
-                case LEFT_HORIZONTAL:
-                    changeSkierState(WALK_LEFT);
-                    break;
-                case WALK_LEFT:
-                    changeSkierState(LEFT_HORIZONTAL);
-                    break;
-                case RIGHT_HORIZONTAL:
-                    changeSkierState(WALK_RIGHT);
-                    break;
-                case WALK_RIGHT:
-                    changeSkierState(RIGHT_HORIZONTAL);
-                    break;
-                default:
-                    changeSkierState(RIGHT_HORIZONTAL);
-                    break;
             }
             moveUp = false;
-            skier.vy = -2;
         }
         else if(moveDown){
             if(skier.state !== STRAIGHT_DOWN){
@@ -220,15 +208,13 @@
         else if(moveLeft){
             switch(skier.state){
                 case LEFT_HORIZONTAL:
-                    //animateSkierState(WALK_LEFT);
-                    changeSkierState(WALK_LEFT);
-                    skier.vx = -2;
+                    animateSkierState(WALK_LEFT);
+                    skier.vx = -3;
                     skier.vy = 0;
                     break;
                 case WALK_LEFT:
-                    //animateSkierState(LEFT_HORIZONTAL);
-                    changeSkierState(LEFT_HORIZONTAL);
-                    skier.vx = -2;
+                    animateSkierState(LEFT_HORIZONTAL);
+                    skier.vx = -3;
                     skier.vy = 0;
                     break;
                 case STRAIGHT_DOWN:
@@ -243,12 +229,12 @@
                     break;
                 case LEFT_DIAGONAL:
                     changeSkierState(LEFT_HORIZONTAL);
-                    skier.vx = -2;
+                    skier.vx = -3;
                     skier.vy = 0;
                     break;
                 default:
                     changeSkierState(LEFT_HORIZONTAL);
-                    skier.vx = -2;
+                    skier.vx = -3;
                     skier.vy = 0;
             }
             moveLeft = false;
@@ -256,17 +242,37 @@
         else if(moveRight){
             switch(skier.state){
                 case RIGHT_HORIZONTAL:
-                    changeSkierState(WALK_RIGHT);
+                    animateSkierState(WALK_RIGHT);
+                    skier.vx = 3;
+                    skier.vy = 0;
                     break;
                 case WALK_RIGHT:
+                    animateSkierState(RIGHT_HORIZONTAL);
+                    skier.vx = 3;
+                    skier.vy = 0;
+                    break;
+                case STRAIGHT_DOWN:
+                    changeSkierState(RIGHT_SLIGHT);
+                    skier.vx = 1.5;
+                    skier.vy = 2.6;
+                    break;
+                case RIGHT_SLIGHT:
+                    changeSkierState(RIGHT_DIAGONAL);
+                    skier.vx = 2.6;
+                    skier.vy = 1.5;
+                    break;
+                case RIGHT_DIAGONAL:
                     changeSkierState(RIGHT_HORIZONTAL);
+                    skier.vx = 3;
+                    skier.vy = 0;
                     break;
                 default:
                     changeSkierState(RIGHT_HORIZONTAL);
+                    skier.vx = 3;
+                    skier.vy = 0;
                     break;
             }
             moveRight = false;
-            skier.vx = 1;
         }
         else{
             switch(skier.state){
