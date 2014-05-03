@@ -25,6 +25,10 @@
     var moveRight = false;
     var moveLeft  = false;
 
+    var SPEED      = 3;
+    var COMPONENT1 = 1.5;
+    var COMPONENT2 = 2.6;
+
     window.addEventListener("keydown", function(event){
         switch(event.keyCode){
             case UP:
@@ -72,8 +76,6 @@
                 skier.sourceHeight = 28;
                 skier.width        = 25;
                 skier.height       = 28;
-                skier.vx           = 0;
-                skier.vy           = 0;
                 skier.state        = LEFT_HORIZONTAL;
                 skier.mirrored     = true;
                 break;
@@ -84,8 +86,6 @@
                 skier.sourceHeight = 28;
                 skier.width        = 25;
                 skier.height       = 28;
-                skier.vx           = 0;
-                skier.vy           = 0;
                 skier.state        = RIGHT_HORIZONTAL;
                 skier.mirrored     = false;
                 break;
@@ -96,8 +96,8 @@
                 skier.sourceHeight = 34;
                 skier.width        = 25;
                 skier.height       = 34;
-                skier.vx           = 0;
-                skier.vy           = 0;
+                skier.vx           = -COMPONENT1;
+                skier.vy           = COMPONENT2;
                 skier.state        = LEFT_SLIGHT;
                 skier.mirrored     = true;
                 skier.counter      = 0;
@@ -109,8 +109,8 @@
                 skier.sourceHeight = 34;
                 skier.width        = 22;
                 skier.height       = 34;
-                skier.vx           = 0;
-                skier.vy           = 0;
+                skier.vx           = COMPONENT1;
+                skier.vy           = COMPONENT2;
                 skier.state        = RIGHT_SLIGHT;
                 skier.mirrored     = false;
                 skier.counter      = 0;
@@ -122,8 +122,8 @@
                 skier.sourceHeight = 34;
                 skier.width        = 20;
                 skier.height       = 34;
-                skier.vx           = 0;
-                skier.vy           = 0;
+                skier.vx           = -COMPONENT2;
+                skier.vy           = COMPONENT1;
                 skier.state        = LEFT_DIAGONAL;
                 skier.mirrored     = true;
                 skier.counter      = 0;
@@ -135,8 +135,8 @@
                 skier.sourceHeight = 34;
                 skier.width        = 20;
                 skier.height       = 34;
-                skier.vx           = 0;
-                skier.vy           = 0;
+                skier.vx           = COMPONENT2;
+                skier.vy           = COMPONENT1;
                 skier.state        = RIGHT_DIAGONAL;
                 skier.mirrored     = false;
                 skier.counter      = 0;
@@ -149,7 +149,7 @@
                 skier.width        = 18;
                 skier.height       = 34;
                 skier.vx           = 0;
-                skier.vy           = 0;
+                skier.vy           = SPEED;
                 skier.state        = STRAIGHT_DOWN;
                 skier.mirrored     = false;
                 skier.counter      = 0;
@@ -161,8 +161,6 @@
                 skier.sourceHeight = 28;
                 skier.width        = 25;
                 skier.height       = 28;
-                skier.vx           = 0;
-                skier.vy           = 0;
                 skier.state        = WALK_RIGHT;
                 skier.mirrored     = false;
                 break;
@@ -173,8 +171,6 @@
                 skier.sourceHeight = 28;
                 skier.width        = 25;
                 skier.height       = 28;
-                skier.vx           = 0;
-                skier.vy           = 0;
                 skier.state        = WALK_LEFT;
                 skier.mirrored     = true;
                 break;
@@ -203,39 +199,37 @@
                 changeSkierState(STRAIGHT_DOWN);
             }
             moveDown = false;
-            skier.vy = 3;
         }
         else if(moveLeft){
             switch(skier.state){
                 case LEFT_HORIZONTAL:
                     animateSkierState(WALK_LEFT);
-                    skier.vx = -3;
+                    skier.vx = -SPEED;
                     skier.vy = 0;
                     break;
                 case WALK_LEFT:
                     animateSkierState(LEFT_HORIZONTAL);
-                    skier.vx = -3;
+                    skier.vx = -SPEED;
                     skier.vy = 0;
                     break;
                 case STRAIGHT_DOWN:
                     changeSkierState(LEFT_SLIGHT);
-                    skier.vx = -1.5;
-                    skier.vy = 2.6;
                     break;
                 case LEFT_SLIGHT:
                     changeSkierState(LEFT_DIAGONAL);
-                    skier.vx = -2.6;
-                    skier.vy = 1.5;
                     break;
                 case LEFT_DIAGONAL:
                     changeSkierState(LEFT_HORIZONTAL);
-                    skier.vx = -3;
-                    skier.vy = 0;
                     break;
-                default:
-                    changeSkierState(LEFT_HORIZONTAL);
-                    skier.vx = -3;
-                    skier.vy = 0;
+                case RIGHT_HORIZONTAL:
+                    changeSkierState(RIGHT_DIAGONAL);
+                    break;
+                case RIGHT_DIAGONAL:
+                    changeSkierState(RIGHT_SLIGHT);
+                    break;
+                case RIGHT_SLIGHT:
+                    changeSkierState(STRAIGHT_DOWN);
+                    break;
             }
             moveLeft = false;
         }
@@ -243,33 +237,31 @@
             switch(skier.state){
                 case RIGHT_HORIZONTAL:
                     animateSkierState(WALK_RIGHT);
-                    skier.vx = 3;
+                    skier.vx = SPEED;
                     skier.vy = 0;
                     break;
                 case WALK_RIGHT:
                     animateSkierState(RIGHT_HORIZONTAL);
-                    skier.vx = 3;
+                    skier.vx = SPEED;
                     skier.vy = 0;
                     break;
                 case STRAIGHT_DOWN:
                     changeSkierState(RIGHT_SLIGHT);
-                    skier.vx = 1.5;
-                    skier.vy = 2.6;
                     break;
                 case RIGHT_SLIGHT:
                     changeSkierState(RIGHT_DIAGONAL);
-                    skier.vx = 2.6;
-                    skier.vy = 1.5;
                     break;
                 case RIGHT_DIAGONAL:
                     changeSkierState(RIGHT_HORIZONTAL);
-                    skier.vx = 3;
-                    skier.vy = 0;
                     break;
-                default:
-                    changeSkierState(RIGHT_HORIZONTAL);
-                    skier.vx = 3;
-                    skier.vy = 0;
+                case LEFT_HORIZONTAL:
+                    changeSkierState(LEFT_DIAGONAL);
+                    break;
+                case LEFT_DIAGONAL:
+                    changeSkierState(LEFT_SLIGHT);
+                    break;
+                case LEFT_SLIGHT:
+                    changeSkierState(STRAIGHT_DOWN);
                     break;
             }
             moveRight = false;
