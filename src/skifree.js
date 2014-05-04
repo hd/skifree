@@ -3,16 +3,33 @@
     var drawingSurface = canvas.getContext("2d");
     AnimationFrame.shim();
 
+    var gameWorld = {
+        x: 0,
+        y: 0,
+        width: canvas.width,
+        height: 9600
+    };
+    var camera = {
+        x: 0,
+        y: 0,
+        width: canvas.width,
+        height: canvas.height
+    };
+    camera.x = (gameWorld.x + gameWorld.width/2) - camera.width/2;
+    camera.y = (gameWorld.y + gameWorld.height/2) - camera.height/2;
+
     var sprites = [];
 
     var skier = Object.create(spriteObject);
+    skier.x = (gameWorld.x + gameWorld.width/2) - skier.width/2;
+    skier.y = (gameWorld.y + gameWorld.height/2) - skier.height/2;
     sprites.push(skier);
 
     var image = new Image();
     image.addEventListener("load", loadHandler, false);
     image.src = "../images/SkiFreeStuff.png";
 
-    var mirroredImage = new Image()
+    var mirroredImage = new Image();
     mirroredImage.addEventListener("load", loadHandler, false);
     mirroredImage.src = "../images/SkiFreeStuffMirrored.png";
 
@@ -25,9 +42,12 @@
     var moveRight = false;
     var moveLeft  = false;
 
-    var SPEED      = 3;
-    var COMPONENT1 = 1.5;
-    var COMPONENT2 = 2.6;
+    //var SPEED      = 3;
+    //var COMPONENT1 = 1.5;
+    //var COMPONENT2 = 2.6;
+    var SPEED      = 1;
+    var COMPONENT1 = 0.5;
+    var COMPONENT2 = 0.87;
 
     window.addEventListener("keydown", function(event){
         switch(event.keyCode){
@@ -277,14 +297,23 @@
                     break;
             }
         }
-        //console.log(count);
-        skier.x = Math.max(0, Math.min(skier.x + skier.vx, canvas.width - skier.width));
-        skier.y = Math.max(0, Math.min(skier.y + skier.vy, canvas.height - skier.height));
+        skier.x = Math.max(0, Math.min(skier.x + skier.vx, gameWorld.width - skier.width));
+        skier.y = Math.max(0, Math.min(skier.y + skier.vy, gameWorld.height - skier.height));
+        camera.x = Math.max(0, Math.min(
+            Math.floor(skier.x + (skier.width/2) - (camera.width/2)),
+            gameWorld.width - camera.width
+        ));
+        camera.y = Math.max(0, Math.min(
+            Math.floor(skier.y + (skier.height/2) - (camera.height/2)),
+            gameWorld.height - camera.height
+        ));
         render();
     }
 
     function render(){
         drawingSurface.clearRect(0, 0, canvas.width, canvas.height);
+        drawingSurface.save();
+        drawingSurface.translate(-camera.x, -camera.y);
         if(sprites.length !== 0){
             for(var i = 0; i < sprites.length; i++){
                 var sprite = sprites[i];
@@ -298,5 +327,6 @@
             }
 
         }
+        drawingSurface.restore();
     }
 }());

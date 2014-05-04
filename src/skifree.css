@@ -1,1 +1,21 @@
-/*TODO fill out this */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+#floater {
+    position: relative;
+    float: left;
+    height: 50%;
+    margin-bottom: -200px;
+    width: 1px;
+}
+#stage {
+    position relative;
+    clear: left;
+    margin: 0px auto;
+    width: 480px;
+    height: 320px;
+    border: 1px dashed black;
+}
