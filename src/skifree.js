@@ -1,4 +1,4 @@
-(function(){
+(function() {
     var canvas = document.querySelector("canvas");
     var drawingSurface = canvas.getContext("2d");
     AnimationFrame.shim();
@@ -49,8 +49,8 @@
     var COMPONENT1 = 0.5;
     var COMPONENT2 = 0.87;
 
-    window.addEventListener("keydown", function(event){
-        switch(event.keyCode){
+    window.addEventListener("keydown", function(event) {
+        switch(event.keyCode) {
             case UP:
                 moveUp = true;
                 break;
@@ -66,8 +66,8 @@
         }
     }, false);
 
-    window.addEventListener("keyup", function(event){
-        switch(event.keyCode){
+    window.addEventListener("keyup", function(event) {
+        switch (event.keyCode) {
             case UP:
                 moveUp = false;
                 break;
@@ -83,12 +83,12 @@
         }
     }, false);
 
-    function loadHandler(){
+    function loadHandler() {
         update();
     }
 
-    function changeSkierState(state){
-        switch(state){
+    function changeSkierState(state) {
+        switch (state) {
             case LEFT_HORIZONTAL:
                 skier.sourceX      = 249;
                 skier.sourceY      = 6;
@@ -197,31 +197,26 @@
         }
     }
 
-    function  animateSkierState(state){
-        if(skier.counter === skier.step){
+    function  animateSkierState(state) {
+        if (skier.counter === skier.step) {
             skier.counter = 0;
             changeSkierState(state);
-        }
-        else{
+        } else {
             skier.counter += 1;
         }
     }
 
     function update(){
         window.requestAnimationFrame(update, canvas);
-        if(moveUp){
-            switch(skier.state){
-            }
+        if (moveUp) {
             moveUp = false;
-        }
-        else if(moveDown){
-            if(skier.state !== STRAIGHT_DOWN){
+        } else if (moveDown) {
+            if (skier.state !== STRAIGHT_DOWN) {
                 changeSkierState(STRAIGHT_DOWN);
             }
             moveDown = false;
-        }
-        else if(moveLeft){
-            switch(skier.state){
+        } else if(moveLeft) {
+            switch (skier.state) {
                 case LEFT_HORIZONTAL:
                     animateSkierState(WALK_LEFT);
                     skier.vx = -SPEED;
@@ -252,9 +247,8 @@
                     break;
             }
             moveLeft = false;
-        }
-        else if(moveRight){
-            switch(skier.state){
+        } else if (moveRight) {
+            switch (skier.state) {
                 case RIGHT_HORIZONTAL:
                     animateSkierState(WALK_RIGHT);
                     skier.vx = SPEED;
@@ -285,9 +279,8 @@
                     break;
             }
             moveRight = false;
-        }
-        else{
-            switch(skier.state){
+        } else {
+            switch (skier.state) {
                 case LEFT_HORIZONTAL:
                 case WALK_LEFT:
                 case RIGHT_HORIZONTAL:
@@ -310,12 +303,12 @@
         render();
     }
 
-    function render(){
+    function render() {
         drawingSurface.clearRect(0, 0, canvas.width, canvas.height);
         drawingSurface.save();
         drawingSurface.translate(-camera.x, -camera.y);
-        if(sprites.length !== 0){
-            for(var i = 0; i < sprites.length; i++){
+        if (sprites.length !== 0) {
+            for (var i = 0; i < sprites.length; i++) {
                 var sprite = sprites[i];
                 drawingSurface.drawImage(
                     sprite.mirrored ? mirroredImage : image,
