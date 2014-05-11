@@ -8,6 +8,15 @@ var STRAIGHT_DOWN    = 6;
 var WALK_LEFT        = 7;
 var WALK_RIGHT       = 8;
 
+var smallTree = {
+    sourceX:      0,
+    sourceY:      30,
+    sourceWidth:  28,
+    sourceHeight: 32,
+    x:            0,
+    y:            0
+};
+
 var spriteObject = {
     sourceX:      0,
     sourceY:      6,

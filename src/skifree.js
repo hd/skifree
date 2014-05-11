@@ -16,14 +16,22 @@
         height: canvas.height
     };
     camera.x = (gameWorld.x + gameWorld.width/2) - camera.width/2;
-    camera.y = (gameWorld.y + gameWorld.height/2) - camera.height/2;
+    camera.y = (gameWorld.y + canvas.height/2) - camera.height/2;
 
     var sprites = [];
-
     var skier = Object.create(spriteObject);
     skier.x = (gameWorld.x + gameWorld.width/2) - skier.width/2;
-    skier.y = (gameWorld.y + gameWorld.height/2) - skier.height/2;
+    skier.y = (gameWorld.y + canvas.height/2) - skier.height/2;
     sprites.push(skier);
+
+    //var bigAssTree = Object.create(smallTree);
+    var staticObjs = [];
+    // creating small trees objects
+    for (var i = 0; i < 10; i++) {
+        var tree = Object.create(smallTree);
+        newRandomLocation(tree, 2, 0, 0);
+        staticObjs.push(tree);
+    }
 
     var image = new Image();
     image.addEventListener("load", loadHandler, false);
@@ -32,6 +40,10 @@
     var mirroredImage = new Image();
     mirroredImage.addEventListener("load", loadHandler, false);
     mirroredImage.src = "../images/SkiFreeStuffMirrored.png";
+
+    var objImage = new Image();
+    objImage.addEventListener("load", loadHandler, false);
+    objImage.src = "../images/SkiFreeObjects.png"
 
     var UP    = 38;
     var DOWN  = 40;
@@ -206,6 +218,40 @@
         }
     }
 
+    function isObjVisibleOrAhead(obj) {
+        var xOk =  false;
+        var yOk = false;
+
+        if ((obj.x + obj.sourceWidth) > camera.x) {
+            xOk = true;
+        }
+        if ((obj.y + obj.sourceHeight) > camera.y) {
+            yOk = true;
+        }
+        return (xOk && yOk);
+    }
+
+    function isObjVisible(obj) {
+        var xOk = false;
+        var yOk = false;
+        var xdelta = obj.x - camera.x;
+        var ydelta = obj.y - camera.y;
+        if ((xdelta > -obj.sourceWidth) && (xdelta < canvas.width)) {
+            xOk = true;
+        }
+        if ((ydelta > -obj.sourceHeight) && (ydelta < canvas.height)) {
+            yOk = true;
+        }
+        return (xOk && yOk);
+    }
+
+    function newRandomLocation(obj, factor, offsetx, offsety) {
+        var x = (Math.random() * (factor*canvas.width - obj.sourceWidth)) + camera.x + offsetx;
+        var y = (Math.random() * (factor*canvas.height - obj.sourceHeight)) +  camera.y + offsety;
+        obj.x = x;
+        obj.y = y;
+    }
+
     function update(){
         window.requestAnimationFrame(update, canvas);
         if (moveUp) {
@@ -290,6 +336,7 @@
                     break;
             }
         }
+
         skier.x = Math.max(0, Math.min(skier.x + skier.vx, gameWorld.width - skier.width));
         skier.y = Math.max(0, Math.min(skier.y + skier.vy, gameWorld.height - skier.height));
         camera.x = Math.max(0, Math.min(
@@ -300,6 +347,13 @@
             Math.floor(skier.y + (skier.height/2) - (camera.height/2)),
             gameWorld.height - camera.height
         ));
+
+        for (var i = 0; i < staticObjs.length; i++) {
+            var obj = staticObjs[i];
+            if (! isObjVisibleOrAhead(obj)) {
+                newRandomLocation(obj, 2, 0, canvas.height);
+            }
+        }
         render();
     }
 
@@ -307,19 +361,29 @@
         drawingSurface.clearRect(0, 0, canvas.width, canvas.height);
         drawingSurface.save();
         drawingSurface.translate(-camera.x, -camera.y);
-        if (sprites.length !== 0) {
-            for (var i = 0; i < sprites.length; i++) {
-                var sprite = sprites[i];
+
+        for (var i = 0; i < staticObjs.length; i++) {
+            var  obj = staticObjs[i];
+            if (isObjVisible(obj)) {
                 drawingSurface.drawImage(
-                    sprite.mirrored ? mirroredImage : image,
-                    sprite.sourceX, sprite.sourceY,
-                    sprite.sourceWidth, sprite.sourceHeight,
-                    Math.floor(sprite.x), Math.floor(sprite.y),
-                    sprite.width, sprite.height
+                    objImage, obj.sourceX, obj.sourceY,
+                    obj.sourceWidth, obj.sourceHeight,
+                    Math.floor(obj.x), Math.floor(obj.y),
+                    obj.sourceWidth, obj.sourceHeight
                 );
             }
-
         }
+        for (var i = 0; i < sprites.length; i++) {
+            var sprite = sprites[i];
+            drawingSurface.drawImage(
+                sprite.mirrored ? mirroredImage : image,
+                sprite.sourceX, sprite.sourceY,
+                sprite.sourceWidth, sprite.sourceHeight,
+                Math.floor(sprite.x), Math.floor(sprite.y),
+                sprite.width, sprite.height
+            );
+        }
+
         drawingSurface.restore();
     }
 }());
