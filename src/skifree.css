@@ -4,6 +4,13 @@ html, body {
     height: 100%;
 }
 
+p {
+    text-align: center;
+    font-size: 12px;
+    padding-bottom: 20px;
+    color: black;
+}
+
 #floater {
     position: relative;
     float: left;
@@ -11,6 +18,7 @@ html, body {
     margin-bottom: -200px;
     width: 1px;
 }
+
 #stage {
     position relative;
     clear: left;
