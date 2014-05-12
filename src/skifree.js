@@ -44,6 +44,8 @@
     objImage.addEventListener("load", loadHandler, false);
     objImage.src = "../images/SkiFreeObjects.png"
 
+    var REACHED_END = false;
+
     var UP    = 38;
     var DOWN  = 40;
     var RIGHT = 39;
@@ -130,7 +132,7 @@
         if (moveUp) {
             moveUp = false;
         } else if (moveDown) {
-            if (skier.state !== STRAIGHT_DOWN) {
+            if (skier.state !== STRAIGHT_DOWN && skier.state !== DISABLED) {
                 changeSkierState(skier, STRAIGHT_DOWN);
             }
             moveDown = false;
@@ -158,11 +160,17 @@
                 case RIGHT_HORIZONTAL:
                     changeSkierState(skier, RIGHT_DIAGONAL);
                     break;
+                case WALK_RIGHT:
+                    changeSkierState(skier, RIGHT_DIAGONAL);
+                    break;
                 case RIGHT_DIAGONAL:
                     changeSkierState(skier, RIGHT_SLIGHT);
                     break;
                 case RIGHT_SLIGHT:
                     changeSkierState(skier, STRAIGHT_DOWN);
+                    break;
+                case COLLISION:
+                    changeSkierState(skier, LEFT_HORIZONTAL);
                     break;
             }
             moveLeft = false;
@@ -190,11 +198,17 @@
                 case LEFT_HORIZONTAL:
                     changeSkierState(skier, LEFT_DIAGONAL);
                     break;
+                case WALK_LEFT:
+                    changeSkierState(skier, LEFT_DIAGONAL);
+                    break;
                 case LEFT_DIAGONAL:
                     changeSkierState(skier, LEFT_SLIGHT);
                     break;
                 case LEFT_SLIGHT:
                     changeSkierState(skier, STRAIGHT_DOWN);
+                    break;
+                case COLLISION:
+                    changeSkierState(skier, RIGHT_HORIZONTAL);
                     break;
             }
             moveRight = false;
@@ -225,13 +239,9 @@
             var obj = staticObjs[i];
             if (isObjVisible(obj)) {
                 if (rectCollisionDetection(skier, obj) !== "none") {
-                    console.log("Collision");
-                    console.log(skier.x);
-                    console.log(skier.y);
-                    console.log(obj.x);
-                    console.log(obj.y);
                     skier.vx = 0;
                     skier.vy = 0;
+                    changeSkierState(skier, COLLISION);
                     break;
                 }
             }
@@ -243,6 +253,15 @@
                 newRandomLocation(obj, 2, 0, canvas.height);
             }
         }
+
+        if (!REACHED_END &&
+            (skier.y >= (gameWorld.height - skier.sourceHeight))) {
+            skier.vx = 0;
+            skier.vy = 0;
+            changeSkierState(skier, DISABLED);
+            REACHED_END = true;
+        }
+
         render();
     }
 

@@ -7,13 +7,15 @@ var RIGHT_DIAGONAL   = 5;
 var STRAIGHT_DOWN    = 6;
 var WALK_LEFT        = 7;
 var WALK_RIGHT       = 8;
+var COLLISION        = 9;
+var DISABLED         = 10;
 
-//var SPEED      = 3;
-//var COMPONENT1 = 1.5;
-//var COMPONENT2 = 2.6;
-var SPEED      = 1;
-var COMPONENT1 = 0.5;
-var COMPONENT2 = 0.87;
+var SPEED      = 3;
+var COMPONENT1 = 1.5;
+var COMPONENT2 = 2.6;
+//var SPEED      = 1;
+//var COMPONENT1 = 0.5;
+//var COMPONENT2 = 0.87;
 
 var smallTree = {
     sourceX:      0,
@@ -127,6 +129,22 @@ function changeSkierState(skier, state) {
             skier.sourceWidth  = 25;
             skier.sourceHeight = 28;
             skier.state        = WALK_LEFT;
+            skier.mirrored     = true;
+            break;
+        case COLLISION:
+            skier.sourceX      = 242;
+            skier.sourceY      = 0;
+            skier.sourceWidth  = 31;
+            skier.sourceHeight = 33;
+            skier.state        = COLLISION;
+            skier.mirrored     = false;
+            break;
+        case DISABLED:
+            skier.sourceX      = 249;
+            skier.sourceY      = 6;
+            skier.sourceWidth  = 25;
+            skier.sourceHeight = 28;
+            skier.state        = DISABLED;
             skier.mirrored     = true;
             break;
     }
