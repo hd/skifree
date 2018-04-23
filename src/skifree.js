@@ -34,15 +34,15 @@
 
     var image = new Image();
     image.addEventListener("load", loadHandler, false);
-    image.src = "../images/SkiFreeStuff.png";
+    image.src = "./images/SkiFreeStuff.png";
 
     var mirroredImage = new Image();
     mirroredImage.addEventListener("load", loadHandler, false);
-    mirroredImage.src = "../images/SkiFreeStuffMirrored.png";
+    mirroredImage.src = "./images/SkiFreeStuffMirrored.png";
 
     var objImage = new Image();
     objImage.addEventListener("load", loadHandler, false);
-    objImage.src = "../images/SkiFreeObjects.png"
+    objImage.src = "./images/SkiFreeObjects.png"
 
     var REACHED_END = false;
 
